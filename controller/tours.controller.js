@@ -36,7 +36,9 @@ const getTours = async (req, res) => {
   query = JSON.parse(query); // convert query string to object
 
   try {
-    const allTours = await Tours.find(query);
+    const allTours = await Tours.find(query).select({
+      __v: 0,
+    });
 
     res.status(200).json({
       status: 'success',
@@ -69,8 +71,23 @@ const getTourById = async (req, res) => {
   }
 };
 
+const updateTour = async (req, res) => {
+  const { id } = req.params;
+
+  const updateTour = await Tours.findByIdAndUpdate(id, req.body, {
+    new: true,
+  });
+
+  res.status(200).json({
+    status: 'success',
+    message: 'Tour updated successfully',
+    data: updateTour,
+  });
+};
+
 module.exports = {
   addTour,
   getTours,
   getTourById,
+  updateTour,
 };

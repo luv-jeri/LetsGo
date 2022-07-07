@@ -5,6 +5,6 @@ const tourRoute = express.Router();
 
 tourRoute.route('/').post(controller.addTour).get(controller.getTours);
 
-tourRoute.route('/:id').get(controller.getTourById);
+tourRoute.route('/:id').get(controller.getTourById).patch(controller.updateTour);
 
 module.exports = tourRoute;
