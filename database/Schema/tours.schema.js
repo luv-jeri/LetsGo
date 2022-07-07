@@ -27,6 +27,15 @@ const tourSchema = new Schema(
       min: [0, 'A rating must be at least 1'],
       max: [5, 'A rating must be at most 5'],
     },
+    ratingNumber: {
+      type: Number,
+      default: 0,
+    },
+    price: {
+      type: Number,
+      required: [true, 'A tour must have a price'],
+    },
+    photo: [{ type: String }],
   },
   {
     timestamps: true,

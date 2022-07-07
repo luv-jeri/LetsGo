@@ -1,13 +1,14 @@
 const Tours = require('../database/Schema/tours.schema');
 
 const addTour = async (req, res) => {
-  const { name, duration, maxGroupSize, difficulty } = req.body;
+  const { name, duration, maxGroupSize, difficulty, price } = req.body;
   try {
     const newTour = await Tours.create({
       name,
       duration,
       maxGroupSize,
       difficulty,
+      price,
     });
     res.status(200).json({
       status: 'success',
@@ -15,6 +16,7 @@ const addTour = async (req, res) => {
       data: newTour,
     });
   } catch (e) {
+    __(e);
     res.status(400).json({
       status: 'fail',
       message: e._message,
@@ -22,15 +24,27 @@ const addTour = async (req, res) => {
   }
 };
 
-const getAllTours = async (req, res) => {
+const getTours = async (req, res) => {
+  let { query } = req; // query is an object
+
+  query = JSON.stringify(query); // convert query to string
+
+  query = query.replace(/\b(gt|gte|lt|lte)\b/g, (match) => {
+    return `$${match}`;
+  }); // find all the gt|gte|lt|lte and replace them with $gt|$gte|$lt|$lte
+
+  query = JSON.parse(query); // convert query string to object
+
   try {
-    const allTours = await Tours.find();
+    const allTours = await Tours.find(query);
+
     res.status(200).json({
       status: 'success',
       message: `${allTours.length} tours found`,
       data: allTours,
     });
   } catch (e) {
+    // __(e);
     res.status(400).json({
       status: 'fail',
       message: e._message,
@@ -57,6 +71,6 @@ const getTourById = async (req, res) => {
 
 module.exports = {
   addTour,
-  getAllTours,
+  getTours,
   getTourById,
 };
