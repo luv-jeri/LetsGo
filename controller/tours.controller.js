@@ -36,7 +36,7 @@ const getTours = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: 'success',
-    message: `${allTours.length} tours found`,
+    message: `Hello , ${req.user.name} you have ${allTours.length} tours`,
     data: allTours,
   });
 });

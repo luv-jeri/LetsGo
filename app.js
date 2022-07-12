@@ -7,7 +7,6 @@ app.use(morgan('dev'));
 app.use(express.json());
 
 app.use('/api/v1/auth', require('./routes/authentication.routes'));
-app.use('/api/v1/tours', require('./routes/tours.routes'));
 
 // # Global Error Handling Middleware
 app.use((err, req, res, next) => {

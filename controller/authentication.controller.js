@@ -2,7 +2,8 @@ const User = require('../database/Schema/user.schema');
 const _Error = require('../utils/_Error');
 const catchAsync = require('../utils/catch_async');
 const bcrypt = require('bcryptjs');
-
+const jwt = require('jsonwebtoken');
+const { promisify } = require('util');
 module.exports.singUp = catchAsync(async (req, res, next) => {
   const { name, email, password, confirmPassword, phone, photo } = req.body;
 
@@ -47,14 +48,24 @@ module.exports.login = catchAsync(async (req, res, next) => {
     return next(new _Error('Invalid email or password', 401));
   }
 
+  const token = jwt.sign(
+    {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+    },
+    'eyetheme',
+    {
+      expiresIn: '24h',
+    }
+  );
+
+  _(token);
+
   res.status(200).json({
     status: 'success',
     message: 'User logged in successfully',
-    data: {
-      email: user.email,
-      name: user.name,
-      phone: user.phone,
-      photo: user.photo,
-    },
+
+    token,
   });
 });
