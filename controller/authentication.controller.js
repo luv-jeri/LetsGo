@@ -4,6 +4,7 @@ const catchAsync = require('../utils/catch_async');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { promisify } = require('util');
+
 module.exports.singUp = catchAsync(async (req, res, next) => {
   const { name, email, password, confirmPassword, phone, photo } = req.body;
 
@@ -54,18 +55,23 @@ module.exports.login = catchAsync(async (req, res, next) => {
       name: user.name,
       email: user.email,
     },
-    'eyetheme',
+    process.env.JWT_SECRET,
     {
       expiresIn: '24h',
     }
   );
 
   _(token);
+  // # EXPLAIN THE BELOW LINE
+  res.cookie('authorization', token, {
+    expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+  });
 
   res.status(200).json({
     status: 'success',
     message: 'User logged in successfully',
-
     token,
   });
 });

@@ -1,10 +1,17 @@
 const express = require('express');
 const morgan = require('morgan');
+const cookieParser = require('cookie-parser');
 
 const app = express();
 
-app.use(morgan('dev'));
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+}
+
 app.use(express.json());
+app.use(cookieParser());
+
+app.use('/api/v1/tours', require('./routes/tours.routes'));
 
 app.use('/api/v1/auth', require('./routes/authentication.routes'));
 
