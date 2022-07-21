@@ -4,7 +4,7 @@ const authController = require('../controller/authorization.controller');
 
 const tourRoute = express.Router();
 
-// tourRoute.use(authController.authenticate);
+tourRoute.use(authController.authenticate);
 
 tourRoute.route('/').post(controller.addTour).get(controller.getTours);
 

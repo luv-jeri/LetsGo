@@ -19,6 +19,10 @@ const userSchema = new Schema(
       lowercase: true,
       validate: [validator.isEmail, 'Please provide a valid email'],
     },
+    role: {
+      type: String,
+      enum: ['tourist', 'organizer'],
+    },
     phone: {
       type: String,
       required: [true, 'Phone is required'],

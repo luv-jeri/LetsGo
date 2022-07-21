@@ -1,12 +1,22 @@
 const express = require('express');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 
 const app = express();
 
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
+
+const origin = ['http://localhost:3000', 'http://localhost:3001'];
+
+app.use(
+  cors({
+    origin,
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 app.use(cookieParser());
