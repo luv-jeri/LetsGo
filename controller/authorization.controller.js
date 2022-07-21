@@ -4,6 +4,10 @@ const catchAsync = require('../utils/catch_async');
 const jwt = require('jsonwebtoken');
 const { promisify } = require('util');
 
+//! get the token from header or cookies
+//! Check if the token is starting with Bearer
+//! if yes then remove it before decoding
+
 module.exports.authenticate = catchAsync(async (req, res, next) => {
   const { authorization } = req.headers || req.cookies;
 
