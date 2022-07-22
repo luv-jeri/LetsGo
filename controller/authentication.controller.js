@@ -5,6 +5,8 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { promisify } = require('util');
 
+const sendMail = require('../utils/send_mail');
+
 module.exports.singUp = catchAsync(async (req, res, next) => {
   const { name, email, password, confirmPassword, phone, photo, organizer } = req.body;
 
@@ -93,5 +95,65 @@ module.exports.login = catchAsync(async (req, res, next) => {
     status: 'success',
     message: 'User logged in successfully',
     token,
+  });
+});
+
+module.exports.forgotPassword = catchAsync(async (req, res, next) => {
+  const { email } = req.body;
+
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    return next(new _Error('User with that email does not exist', 404));
+  }
+
+  await user.generateOTP();
+
+  await sendMail({
+    to: email,
+    subject: 'Reset Password OTP ',
+    text: `Your OTP is ${user.OTP}`,
+  });
+
+  res.status(200).json({
+    status: 'success',
+    message: 'OTP sent to your email',
+  });
+});
+
+module.exports.resetPassword = catchAsync(async (req, res, next) => {
+  const { OTP } = req.query;
+
+  if (!OTP) {
+    return next(new _Error('Please provide OTP', 400));
+  }
+
+  const user = await User.findOne({ OTP });
+
+  if (!user) {
+    return next(new _Error('Invalid OTP', 404));
+  }
+
+  if (user.OTPExpiry < Date.now()) {
+    return next(new _Error('OTP expired', 404));
+  }
+
+  const { password, confirmPassword } = req.body;
+
+  if (password !== confirmPassword) {
+    return next(new _Error('Passwords do not match 😁😁', 400));
+  }
+
+  user.password = password;
+  user.confirmPassword = confirmPassword;
+
+  user.OTP = undefined;
+  user.OTPExpiry = undefined;
+
+  await user.save();
+
+  res.status(200).json({
+    status: 'success',
+    message: 'Password reset successfully',
   });
 });

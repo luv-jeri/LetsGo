@@ -8,6 +8,10 @@ authRoute.route('/sign_up').post(controller.singUp);
 
 authRoute.route('/sign_in').post(controller.login);
 
+authRoute.route('/forget_password').get(controller.forgotPassword);
+
+authRoute.route('/reset_password').post(controller.resetPassword);
+
 authRoute.route('/whoami').get(authController.whoami);
 
 module.exports = authRoute;

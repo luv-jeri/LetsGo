@@ -9,7 +9,11 @@ const { promisify } = require('util');
 //! if yes then remove it before decoding
 
 module.exports.authenticate = catchAsync(async (req, res, next) => {
-  const { authorization } = req.headers || req.cookies;
+  let { authorization } = req.headers;
+
+  if (!authorization) {
+    authorization = req.cookies.authorization;
+  }
 
   let token;
 

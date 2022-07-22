@@ -37,6 +37,13 @@ const userSchema = new Schema(
     photo: {
       type: String,
     },
+    OTP: {
+      type: Number,
+      default: 0,
+    },
+    OTPExpiry: {
+      type: Date,
+    },
     password: {
       type: String,
       required: [true, 'Password is required'],
@@ -73,6 +80,13 @@ userSchema.pre('save', async function (next) {
 
   next();
 });
+
+userSchema.methods.generateOTP = async function () {
+  this.OTP = Math.floor(Math.random() * 1000000);
+  this.OTPExpiry = new Date(Date.now() + 1000000);
+
+  await this.save({ validateBeforeSave: false });
+};
 
 const User = model('User', userSchema);
 

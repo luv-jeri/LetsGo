@@ -25,6 +25,8 @@ app.use('/api/v1/tours', require('./routes/tours.routes'));
 
 app.use('/api/v1/auth', require('./routes/authentication.routes'));
 
+app.use('/api/v1/test', require('./routes/test.routes'));
+
 // # Global Error Handling Middleware
 app.use((err, req, res, next) => {
   const errStatus = err.statusCode || 500;
