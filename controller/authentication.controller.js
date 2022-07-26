@@ -61,14 +61,27 @@ module.exports.login = catchAsync(async (req, res, next) => {
     email,
   }).select('+password');
 
+
+  //# just to fix
+  // if (password === user.password) {
+  //   //  ? password is correct but it is not hashed
+
+  //   user.password = await bcrypt.hash(this.password, 12);
+
+  //   await user.save();
+  // }
+
+
+  // ! switch to invalid email or password error
+
   if (!user) {
-    return next(new _Error('Invalid email or password', 401));
+    return next(new _Error('Invalid Email', 401));
   }
 
   const isMatch = await bcrypt.compare(password, user.password);
 
   if (!isMatch) {
-    return next(new _Error('Invalid email or password', 401));
+    return next(new _Error('Password is wrong.', 401));
   }
 
   const token = jwt.sign(

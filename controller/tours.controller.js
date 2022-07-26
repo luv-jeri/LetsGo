@@ -11,7 +11,11 @@ const addTour = catchAsync(async (req, res, next) => {
     maxGroupSize,
     difficulty,
     price,
+    organizer : req.user._id,
   });
+
+
+
   res.status(200).json({
     status: 'success',
     message: 'Tour added successfully',
@@ -30,13 +34,17 @@ const getTours = catchAsync(async (req, res, next) => {
 
   query = JSON.parse(query); // convert query string to object
 
-  const allTours = await Tours.find(query).select({
-    __v: 0,
-  });
+  query.organizer = req.user._id; // add organizer to query
+
+  const allTours = await Tours.find(query)
+    .select({
+      __v: 0,
+    })
+    .populate('organizer');
 
   res.status(200).json({
     status: 'success',
-    // message: `Hello , ${req.user.name} you have ${allTours.length} tours`,
+    message: `Hello , ${req.user.name} you have ${allTours.length} tours`,
     data: allTours,
   });
 });

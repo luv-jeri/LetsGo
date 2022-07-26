@@ -81,6 +81,8 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
+
+
 userSchema.methods.generateOTP = async function () {
   this.OTP = Math.floor(Math.random() * 1000000);
   this.OTPExpiry = new Date(Date.now() + 1000000);

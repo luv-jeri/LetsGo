@@ -1,7 +1,7 @@
 const catchAsync = (fn) => {
   return (req, res, next) => {
     fn(req, res, next).catch((e) => {
-      __(e);
+      console.log(e);
       next(e);
     });
   };

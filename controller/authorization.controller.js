@@ -15,6 +15,8 @@ module.exports.authenticate = catchAsync(async (req, res, next) => {
     authorization = req.cookies.authorization;
   }
 
+  __('authorization', authorization);
+
   let token;
 
   if (authorization.startsWith('Bearer')) {
@@ -33,21 +35,25 @@ module.exports.authenticate = catchAsync(async (req, res, next) => {
     return next(new _Error('You are logged out.', 401));
   }
 
-  req.user = decoded;
+  const user = await User.findById(decoded.id);
 
+  req.user = user;
+  
   next();
 });
 
 module.exports.whoami = catchAsync(async (req, res, next) => {
   let { authorization } = req.headers;
 
+  console.log('authorization headers', authorization);
+
   if (!authorization) {
     authorization = req.cookies.authorization;
   }
 
-  let token;
+  console.log('authorization cookies', authorization);
 
-  __(authorization);
+  let token;
 
   if (!authorization) {
     return next(new _Error('Please login to continue', 400));
@@ -56,13 +62,14 @@ module.exports.whoami = catchAsync(async (req, res, next) => {
   token = authorization;
 
   if (authorization.startsWith('Bearer')) {
-    console.log('STARTS WITH ____ ', authorization.split(' ')[1]);
     token = authorization.split(' ')[1];
   }
 
   if (!token) {
     return next(new _Error('Please login to continue', 400));
   }
+
+  _(token);
 
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
 
