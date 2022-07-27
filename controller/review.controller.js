@@ -17,13 +17,12 @@ module.exports.addReview = catchAsync(async (req, res, next) => {
     message: 'Review added successfully',
     data: newReview,
   });
-  
 });
 
 module.exports.getReview = catchAsync(async (req, res, next) => {
  
 
-  const newReview = await Review.find().populate('tourist tour');
+  const newReview = await Review.find().populate("tourist tour")
 
   res.status(200).json({
     status: 'success',

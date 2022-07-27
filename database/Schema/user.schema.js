@@ -65,6 +65,11 @@ const userSchema = new Schema(
         message: 'Password and Confirm Password must be the same',
       },
     },
+    reviews : [
+      {
+        type : String,
+      }
+    ]
   },
   {
     timestamps: true,

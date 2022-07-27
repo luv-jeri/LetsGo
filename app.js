@@ -9,8 +9,6 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
-
-
 const origin = ['http://localhost:3000', 'http://localhost:3001'];
 
 app.use(
@@ -25,6 +23,7 @@ app.use(cookieParser());
 
 app.use('/api/v1/tours', require('./routes/tours.routes'));
 app.use('/api/v1/review', require('./routes/review.routes'));
+app.use('/api/v1/booking', require('./routes/booking.routes'));
 
 app.use('/api/v1/auth', require('./routes/authentication.routes'));
 

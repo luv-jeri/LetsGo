@@ -6,6 +6,6 @@ const testRoute = express.Router();
 
 testRoute.use(authController.authenticate);
 
-testRoute.route('/').post(controller.test);
+testRoute.route('/:id').post(controller.test);
 
 module.exports = testRoute;

@@ -36,12 +36,11 @@ const tourSchema = new Schema(
       required: [true, 'A tour must have a price'],
     },
     photo: [{ type: String }],
-
     organizer: {
-      type : mongoose.Schema.Types.ObjectId, // Object id 
-      ref : 'User', // collection of which model is referring to
-    }
-
+      type: mongoose.Schema.Types.ObjectId, // Object id
+      ref: 'User', // collection of which model is referring to
+    },
+    tourists: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tourist' }],
   },
   {
     timestamps: true,
