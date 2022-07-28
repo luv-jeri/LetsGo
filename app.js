@@ -25,6 +25,8 @@ app.use('/api/v1/tours', require('./routes/tours.routes'));
 app.use('/api/v1/review', require('./routes/review.routes'));
 app.use('/api/v1/booking', require('./routes/booking.routes'));
 
+app.use('/api/v1/mark', require('./routes/mark.routes'));
+
 app.use('/api/v1/auth', require('./routes/authentication.routes'));
 
 app.use('/api/v1/test', require('./routes/test.routes'));
@@ -34,6 +36,7 @@ app.use((err, req, res, next) => {
   const errStatus = err.statusCode || 500;
   const message = err.message || 'Something went wrong';
   const status = err.status || 'error';
+
 
   res.status(errStatus).json({ message, status });
 });

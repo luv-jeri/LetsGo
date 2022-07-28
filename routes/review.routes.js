@@ -5,6 +5,6 @@ const reviewRoute = express.Router();
 
 reviewRoute.use(authController.authenticate);
 
-reviewRoute.route('/').post(controller.addReview).get(controller.getReview)
+reviewRoute.route('/').post(controller.addReview).get(controller.getReview);
 
 module.exports = reviewRoute;

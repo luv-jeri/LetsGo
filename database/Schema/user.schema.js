@@ -65,11 +65,24 @@ const userSchema = new Schema(
         message: 'Password and Confirm Password must be the same',
       },
     },
-    reviews : [
+
+    liked: [
       {
-        type : String,
-      }
-    ]
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Tour',
+      },
+    ],
+    disliked: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Tour',
+      },
+    ],
+    reviews: [
+      {
+        type: String,
+      },
+    ],
   },
   {
     timestamps: true,
@@ -85,8 +98,6 @@ userSchema.pre('save', async function (next) {
 
   next();
 });
-
-
 
 userSchema.methods.generateOTP = async function () {
   this.OTP = Math.floor(Math.random() * 1000000);
