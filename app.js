@@ -3,6 +3,7 @@ const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 
+
 const app = express();
 
 if (process.env.NODE_ENV === 'development') {
@@ -37,7 +38,6 @@ app.use((err, req, res, next) => {
   const message = err.message || 'Something went wrong';
   const status = err.status || 'error';
 
-
   res.status(errStatus).json({ message, status });
 });
 
@@ -47,5 +47,6 @@ app.all('*', (req, res) => {
     message: 'Not found',
   });
 });
+
 
 module.exports = app;

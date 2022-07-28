@@ -51,8 +51,10 @@ module.exports.createBooking = async (req, res, next) => {
 
     tour.tourists.push(req.user.id);
     await tour.save({ session });
-
+  
     await session.commitTransaction();
+
+    //#  send a mail
 
     res.status(201).json({
       status: 'success',
