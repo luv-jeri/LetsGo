@@ -1,4 +1,3 @@
-
 const Tour = require('../database/Schema/tours.schema');
 const Booking = require('../database/Schema/booking.schema');
 const sendMail = require('../utils/send_mail');
@@ -21,9 +20,19 @@ const reminder = async () => {
   });
 };
 
+const sweeper = async () => {
+  const tours = await Tour.find({
+    date: {
+      $lt: new Date(),
+    },
+  });
 
-
+  tours.forEach(async (tour) => {
+    await Tour.findByIdAndDelete(tour._id);
+  });
+};
 
 module.exports = {
   reminder,
+  sweeper,
 };
