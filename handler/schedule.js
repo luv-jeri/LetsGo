@@ -9,7 +9,7 @@ const reminder = async () => {
   const tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
 
   const bookings = await Booking.find({
-    date: tomorrow,
+    bookingDate: tomorrow,
   }).populate('tourist');
 
   bookings.forEach(async (booking) => {
@@ -20,6 +20,9 @@ const reminder = async () => {
     });
   });
 };
+
+
+
 
 module.exports = {
   reminder,

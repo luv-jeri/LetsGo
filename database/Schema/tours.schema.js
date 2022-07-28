@@ -8,6 +8,10 @@ const tourSchema = new Schema(
       type: String,
       required: [true, 'A tour must have a name'],
     },
+    date: {
+      type: Date,
+      required: [true, 'A tour must have a date'],
+    },
     duration: {
       type: Number,
       required: [true, 'A tour must have a duration'],
@@ -103,7 +107,6 @@ tourSchema.methods.like = async function (id, session) {
   });
 
   await this.save();
-
 };
 
 tourSchema.methods.dislike = async function (id, session) {
