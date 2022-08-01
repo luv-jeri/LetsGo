@@ -3,7 +3,6 @@ const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 
-
 const app = express();
 
 if (process.env.NODE_ENV === 'development') {
